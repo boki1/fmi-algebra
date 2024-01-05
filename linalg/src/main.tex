@@ -1,0 +1,195 @@
+\documentclass[a4paper]{article}
+
+\usepackage[bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[nottoc]{tocbibind}
+\usepackage{titlesec}
+\usepackage[letterpaper,top=2cm,bottom=2cm,outer=4cm,inner=2cm,heightrounded,marginparwidth=3cm,
+marginparsep=.7cm]{geometry}
+\usepackage{ragged2e}
+\usepackage[acronym,toc]{glossaries}
+
+\usepackage{xcolor}
+\definecolor{superlightorange}{HTML}{fff0e6}
+\definecolor{superlightyellow}{HTML}{ffffcc}
+\definecolor{darkgrey}{HTML}{666666}
+
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+\usepackage[style=alphabetic,backend=biber]{biblatex}
+\addbibresource{literature.bib}
+
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\normalfont\scriptsize\rmfamily}
+\newcommand{\sidenote}[2][0cm] {
+	\marginnote{
+		\begin{mdframed}[rightline=false,topline=false,bottomline=false,leftmargin=-.5cm,outerlinewidth=.7,
+			innertopmargin=0,innerbottommargin=0,innerleftmargin=4,backgroundcolor=white]
+			\begin{flushleft}
+				#2
+			\end{flushleft}
+		\end{mdframed}
+	}[#1]
+}
+
+\newtheorem*{fact}{Факт}
+\newmdtheoremenv[backgroundcolor=superlightorange,innertopmargin=0pt]{theorem}{Теорема}[section]
+\newmdtheoremenv[backgroundcolor=superlightyellow,innertopmargin=0pt]{lemma}{Лема}[section]
+\newtheorem{definition}{Определение}[section]
+
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection.}{1em}{}
+
+\newcommand{\nullvec}[0]{\mathbf{0}}
+
+\glossarystyle{list}
+\makeglossaries
+\newacronym{vecsp}{ЛП}{Линейно пространство}
+\newacronym{lin-depen}{ЛЗ}{Линейно зависими}
+\newacronym{lin-indepen}{ЛНЗ}{Линейно независими}
+
+\title{\textbf{Резултати по линейна алгебра}}
+\author{Кристиян Стоименов}
+\date{2024}
+
+\begin{document}
+
+\maketitle
+
+\renewcommand{\abstractname}{}
+\begin{abstract}
+\par \textsc{Настоящите} записки ``Резултати по линейна алгебра'' не предяват оригиналност, а изцяло целят подпомагане на
+съставителя в усвояването на материала. Съставени са на база курса, четен във
+ФМИ, и учебника, използван там \autocite{fmi-linalg-notes}.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+\printglossary[type=\acronymtype, toctitle=Използвани съкращения,title=Използвани съкращения]
+\newpage
+
+\section{Линейни пространства}
+
+\begin{definition} \label{dfn:vectorspace}
+Нека $F$ е поле и $V$ е непразно множество, чиито елементи ще наричаме
+вектори. Нека във $V$ са въведени следните операции:
+\begin{itemize}
+\item Събиране на вектори: $\forall a, b \in V \implies a + b \in V$;
+\item Умножение на вектор със скалар от полето: $\forall a \in V, \forall \lambda
+	\in F \implies \lambda a \in V$
+\end{itemize}
+Ще казваме, че $V$ е \acrfull{vecsp} над полето $F$, ако тези операции
+удовлетворяват следните свойства (аксиоми):
+\begin{itemize}
+\item Комутативност на събирането: $\forall a, b \in V \implies a + b = b + a$
+\item Асоциативност при събирането: $\forall a,b,c \in V \implies a + (b + c) =
+	(a + b) + c$
+\item Неутрален елемент (спрямо събирането): $\exists \nullvec \in V, \forall a
+	\in V \implies a + \nullvec = \nullvec + a = a$
+\item Противоположен елемент: $\forall a \in V \exists a' \in V$, т-че $a + a' =
+	a' + a = \nullvec$
+	\sidenote{Противоположният елемент на $a$ обичайно бележим $-a$.}
+\item Умножение с $1 \in F$: $\forall a \in V \implies 1.a = a$
+\item Дистрибутивност при събиране на скалари: $\forall \lambda, \mu \in F,
+	\forall a \in V \implies (\lambda + \mu)a = \lambda a + \mu a$
+\item Дистрибутивност при събиране на вектори: $\forall \lambda \in F,
+	\forall a, b \in V \implies \lambda(a + b) = \lambda a + \lambda b$
+\item Асоциативност на умножението със скалар: $\forall \lambda, \mu \in F,
+	\forall a \in V \implies \lambda(\mu a) = (\lambda \mu)a$
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Основни свойства на \acrshort{vecsp}]
+
+Нека $V$ е линейно пространство над полето $F$. Тогава са изпълнени следните
+свойства:
+
+\begin{itemize}
+\item Единственост на нулевия вектор.
+\item Единственост на противоположния елемент.
+\item $\forall a \in V \implies 0.a = \nullvec$
+\item $\forall \lambda \in F \implies \lambda\nullvec = \nullvec$
+\item $\forall a \in V \implies (-1)a = -a$
+\item Ако $\lambda \in F, a \in V$ и $\lambda a = \nullvec$, то или $\lambda = 0$, или $a = \nullvec$.
+\item Ако $a, b \in V$, то уравнението $a + x = b$ има единствено решение във $V$.
+	\sidenote[-1cm]{Това решение оттук нататък вместо $b + (-a)$ ще пишем $b - a$.}
+\end{itemize}
+\end{theorem}
+
+\begin{definition} \label{dfn:lin-combination}
+Нека $V$ е \acrshort{vecsp} над полето $F$. Ако $a_1, a_2, \dots, a_n \in V$ и
+$\lambda_1, \lambda_2, \dots, \lambda_n \in F$, то вектора $\lambda_1 a_1 +
+\lambda_2 a_2 + \dots + \lambda_n a_n \in V$ наричаме лиейна комбинация на
+векторите $a_i$ с коефициенти $\lambda_i$. Множеството от всички линейни
+комбинации на векторите $a_1, a_2, \dots, a_n$ с коефициенти от полето $F$
+наричаме линейна обвивка на $a_1, a_2, \dots, a_n$.
+	\sidenote[-.8cm]{Бележим $l(a_1, a_2, \dots, a_n)$.}
+\end{definition}
+
+\begin{definition} \label{dfn:lin-dependence}
+Нека $V$ е \acrshort{vecsp} над полето $F$. Ако $a_1, a_2, \dots, a_n \in V$, то
+тях ще наричаме \acrfull{lin-depen}, ако съществуват такива коефициенти
+$\lambda_1, \lambda_2, \dots, \lambda_n \in F$, че \[
+	\lambda_1 a_1 + \lambda_2 a_2 + \dots + \lambda_n a_n = \nullvec
+\]
+В противен случай - ако такива коефициенти не съществуват, то за векторите ще
+казваме, че са \acrfull{lin-indepen}.
+\end{definition}
+
+\begin{theorem}[Основни свойства на \acrshort{lin-depen} и \acrshort{lin-indepen}
+	вектори]\label{thm:lin-dependence}
+\begin{itemize}
+\item Един вектор е \acrshort{lin-depen} точно когато е нулевият вектор.
+\item Два вектора са \acrshort{lin-depen} точно когато са пропорционални.
+\item Ако една система от вектори съдържа нулевия вектори или два пропорционални, то тя е \acrshort{lin-depen}.
+\item Всяка подсистема на \acrshort{lin-indepen} система от вектори също е \acrshort{lin-indepen}.
+\item Една система от поне два вектора е \acrshort{lin-depen} точно когато поне един от вектори
+	може да се представи като линейна комбинация на останалите вектори от системата.
+\end{itemize}
+\end{theorem}
+
+\begin{lemma}[Основна лема на линейната алгебра] \label{lma:fundamental-lemma}
+Нека $V$ е \acrshort{vecsp} над полето $F$. Ако имаме два системи от вектори \[
+	A = { a_1, a_2, \dots, a_n }, \\
+	B = { b_1, b_2, \dots, b_k}
+\] за които знаем, че всеки вектор от $B$ може да се представи като линейна
+комбинация на векторите от $A$ и освен това $k > n$, то векторите от системата
+$B$ са \acrshort{lin-depen}.
+	\sidenote[-1.6cm]{\underline{т.е} ако повече на брой вектори се изразяват линейно чрез
+		по-малко на брой вектори, то повечето на брой вектори са \acrshort{lin-depen}.}
+\end{lemma}
+
+\begin{definition} \label{dfn:vector-subspace}
+Нека $V$ е \acrshort{vecsp} и $W$ е непразно подмножество, $\emptyset \neq W
+\subseteq V$. Ще казваме, че $W$ е линейно подпространство (или накратко, само
+подпространство) на $V$, ако всяка линейна
+комбинация на вектори от $W$ също принадлеци на $W$.
+\par Еквивалентно, $W$ е подпространство на $V$, ако е затворено относно
+операциите събиране и умножение със скалар.
+\sidenote[-.5cm]{Бележим $W < V$.}
+\end{definition}
+
+\begin{theorem}[Основни свойства на подпространствата] \label{thm:vector-subspace}
+Следните свойства са изпълнени:
+\begin{itemize}
+\item Всяко подпространство съдържа нулевия вектор.
+\item Сечение на подпространства е подпространство.
+\item Обединение на подпространства е подпространство само когато едното е
+	помножество на другото.
+\item Ако $A$ е система от вектори, то $l(A)$ е подпространство (и то
+	минималното по включване такова).
+\end{itemize}
+\end{theorem}
+
+\newpage
+\section{Литература}
+\nocite{*}
+\printbibliography[heading=none]
+
+\end{document}
