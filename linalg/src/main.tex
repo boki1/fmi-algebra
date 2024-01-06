@@ -14,10 +14,12 @@
 marginparsep=.7cm]{geometry}
 \usepackage{ragged2e}
 \usepackage[acronym,toc]{glossaries}
+\usepackage{wasysym}
 
 \usepackage{xcolor}
 \definecolor{superlightorange}{HTML}{fff0e6}
 \definecolor{superlightyellow}{HTML}{ffffcc}
+\definecolor{superlightpurple}{HTML}{ffe6ff}
 \definecolor{darkgrey}{HTML}{666666}
 
 \usepackage{graphicx}
@@ -41,6 +43,7 @@ marginparsep=.7cm]{geometry}
 
 \newtheorem*{fact}{Факт}
 \newmdtheoremenv[backgroundcolor=superlightorange,innertopmargin=0pt]{theorem}{Теорема}[section]
+\newmdtheoremenv[backgroundcolor=superlightpurple,innertopmargin=0pt]{crly}{Следствие}[theorem]
 \newmdtheoremenv[backgroundcolor=superlightyellow,innertopmargin=0pt]{lemma}{Лема}[section]
 \newtheorem{definition}{Определение}[section]
 
@@ -48,11 +51,18 @@ marginparsep=.7cm]{geometry}
 
 \newcommand{\nullvec}[0]{\mathbf{0}}
 
-\glossarystyle{list}
+\newcommand{\dfn}[1]{\underline{#1}}
+\renewcommand{\subsection}[1]{\noindent\rule{\textwidth}{.7pt} \hfill \begin{center}\wasyparagraph \hspace{1em}
+\textbf{#1} \end{center} }
+\titlespacing*{\subsection} {0pt}{2.25ex plus 1ex minus .2ex}{0.5ex plus .2ex}
+\newcommand{\prgraph}[1]{}
+
+\setglossarystyle{list}
 \makeglossaries
 \newacronym{vecsp}{ЛП}{Линейно пространство}
 \newacronym{lin-depen}{ЛЗ}{Линейно зависими}
 \newacronym{lin-indepen}{ЛНЗ}{Линейно независими}
+\newacronym{fund-sys-sol}{ФСР}{Фундаментална система решения}
 
 \title{\textbf{Резултати по линейна алгебра}}
 \author{Кристиян Стоименов}
@@ -74,7 +84,11 @@ marginparsep=.7cm]{geometry}
 \printglossary[type=\acronymtype, toctitle=Използвани съкращения,title=Използвани съкращения]
 \newpage
 
+\section{Детерминанти}
+
 \section{Линейни пространства}
+
+\subsection{Основни понятия}
 
 \begin{definition} \label{dfn:vectorspace}
 Нека $F$ е поле и $V$ е непразно множество, чиито елементи ще наричаме
@@ -84,7 +98,7 @@ marginparsep=.7cm]{geometry}
 \item Умножение на вектор със скалар от полето: $\forall a \in V, \forall \lambda
 	\in F \implies \lambda a \in V$
 \end{itemize}
-Ще казваме, че $V$ е \acrfull{vecsp} над полето $F$, ако тези операции
+Ще казваме, че $V$ е \dfn{\acrfull{vecsp} над полето $F$}, ако тези операции
 удовлетворяват следните свойства (аксиоми):
 \begin{itemize}
 \item Комутативност на събирането: $\forall a, b \in V \implies a + b = b + a$
@@ -125,21 +139,21 @@ marginparsep=.7cm]{geometry}
 \begin{definition} \label{dfn:lin-combination}
 Нека $V$ е \acrshort{vecsp} над полето $F$. Ако $a_1, a_2, \dots, a_n \in V$ и
 $\lambda_1, \lambda_2, \dots, \lambda_n \in F$, то вектора $\lambda_1 a_1 +
-\lambda_2 a_2 + \dots + \lambda_n a_n \in V$ наричаме лиейна комбинация на
+\lambda_2 a_2 + \dots + \lambda_n a_n \in V$ наричаме \dfn{линейна комбинация} на
 векторите $a_i$ с коефициенти $\lambda_i$. Множеството от всички линейни
 комбинации на векторите $a_1, a_2, \dots, a_n$ с коефициенти от полето $F$
-наричаме линейна обвивка на $a_1, a_2, \dots, a_n$.
+наричаме \dfn{линейна обвивка} на $a_1, a_2, \dots, a_n$.
 	\sidenote[-.8cm]{Бележим $l(a_1, a_2, \dots, a_n)$.}
 \end{definition}
 
 \begin{definition} \label{dfn:lin-dependence}
 Нека $V$ е \acrshort{vecsp} над полето $F$. Ако $a_1, a_2, \dots, a_n \in V$, то
-тях ще наричаме \acrfull{lin-depen}, ако съществуват такива коефициенти
+тях ще наричаме \dfn{\acrfull{lin-depen}}, ако съществуват такива коефициенти
 $\lambda_1, \lambda_2, \dots, \lambda_n \in F$, че \[
 	\lambda_1 a_1 + \lambda_2 a_2 + \dots + \lambda_n a_n = \nullvec
 \]
 В противен случай - ако такива коефициенти не съществуват, то за векторите ще
-казваме, че са \acrfull{lin-indepen}.
+казваме, че са \dfn{\acrfull{lin-indepen}}.
 \end{definition}
 
 \begin{theorem}[Основни свойства на \acrshort{lin-depen} и \acrshort{lin-indepen}
@@ -167,9 +181,8 @@ $B$ са \acrshort{lin-depen}.
 
 \begin{definition} \label{dfn:vector-subspace}
 Нека $V$ е \acrshort{vecsp} и $W$ е непразно подмножество, $\emptyset \neq W
-\subseteq V$. Ще казваме, че $W$ е линейно подпространство (или накратко, само
-подпространство) на $V$, ако всяка линейна
-комбинация на вектори от $W$ също принадлеци на $W$.
+\subseteq V$. Ще казваме, че $W$ е линейно \dfn{подпространство} на $V$,
+ако всяка линейна комбинация на вектори от $W$ също принадлеци на $W$.
 \par Еквивалентно, $W$ е подпространство на $V$, ако е затворено относно
 операциите събиране и умножение със скалар.
 \sidenote[-.5cm]{Бележим $W < V$.}
@@ -186,6 +199,213 @@ $B$ са \acrshort{lin-depen}.
 	минималното по включване такова).
 \end{itemize}
 \end{theorem}
+
+\begin{lemma}
+Нека $V$ е \acrshort{vecsp} и $a_1, a_2, \dots, a_n \in V$ са
+\acrshort{lin-indepen}. Ако $b \in V$ и $b \notin l(a_1, a_2, \dots, a_n)$, то
+$a_1, a_2, \dots, a_n, b$ също са \acrshort{lin-indepen}.
+\end{lemma}
+
+\subsection{Базис и размерност}
+
+\begin{definition} \label{dfn:basis}
+Нека $V \neq \emptyset$ е \acrshort{vecsp} над полето $F$ и $\emptyset \neq B \subseteq V$.
+Ще казваме, че $B$ е \dfn{базис} на $V$, ако е изпълнено, че:
+\begin{itemize}
+\item $B$ е \acrshort{lin-indepen} система от вектори и
+\item $l(B) = V$
+\end{itemize}
+\par Ако $B$ е крайно множество, то пространството $V$ ще наричаме \dfn{крайномерно}, а
+иначе - \dfn{безкрайномерно}.
+\end{definition}
+
+\begin{theorem}
+Ако $A = a_1, a_2, \dots, a_n$ и $V = l(A)$, то съществува подсистема на $A$,
+която е базис на $V$ над $F$.
+\end{theorem}
+
+\begin{theorem}
+Всеки два базиса на крайномерно пространство над поле $F$ съдържат равен брой
+вектори.
+\end{theorem}
+
+\begin{definition}
+Нека $V$ е \acrshort{vecsp} над полето $F$. Тогава броят $k$ на векторите в кой
+да е базис на $V$ наричаме \dfn{размерност} на $V$ над $F$. В случая, когато $V$ е
+безкрайномерно, то размерността е $\infty$.
+	\sidenote{Размерност бележим $dim_FV$.}
+\end{definition}
+
+\begin{theorem}
+Нека $V$ е \acrshort{vecsp} над полето $F$. Тогава:
+\begin{itemize}
+\item $V$ е крайномерно ($dimV=n$) точно когато във $V$ съществуват $n$ на брой
+	\acrshort{lin-indepen} вектори и всеки $n+1$ от са \acrshort{lin-depen}.
+	\sidenote[-1cm]{В такъв случай всеки $n$ \acrshort{lin-indepen} вектора са базис на $V$.}
+\item $V$ е безкрайномерно ($dimV = \infty$) точно когато за всяко естествено
+	число $n \in \mathbb{N}$ можем да намерим вектори $a_1, a_2, \dots, a_n \in
+	V$, които да са \acrshort{lin-indepen}.
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}
+	Ако $V$ е крайномерно \acrshort{vecsp}, то всяка \acrshort{lin-indepen} система
+	от вектори от $V$ може да се допълни до базис на $V$.
+\end{theorem}
+
+\begin{theorem}
+Нека $V$ е крайномерно пространство и $W < V$. Тогава:
+\begin{itemize}
+\item $W$ също е крайномерно и $dimW \leq dimV$ и
+\item $dimW = dimV \iff W = V$
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}
+Нека $V$ е крайномерно \acrshort{vecsp}. Една система $B \subseteq V$ е базис
+точно когато всеки вектор от $V$ се изразява линейно чрез $B$ по единствен
+начин.
+\end{theorem}
+
+\begin{definition}
+Нека $V$ е крайномерно \acrshort{vecsp} над полето $F$ и ${b_1, b_2, \dots,
+b_n}$ е фиксиран базис на $V$. Тогава, ако $u \in V$ и \[
+	u = \lambda_1 b_1 + \lambda_2 b_2 + \dots + \lambda_n b_n,
+\]
+то числата $\lambda_1, \lambda_2, \dots, \lambda_n$ наричаме \dfn{координати} на $u$
+в базиса $b_1, b_2, \dots, b_n$.
+\end{definition}
+
+\subsection{Сума на подпространства}
+
+\begin{definition}
+Нека $V_1, V_2, \dots, V_n$ са подпространства. \dfn{Сума} на подпространства
+ще наричаме \[
+	V := V_1 + V_2 + \dots + V_n = \{ v = v_1 + v_2 + \dots + v_n \mid v_i \in V_i,
+	i=1,\dots,n \}
+\]
+Ако всеки вектор $v \in V$ се преставя по единствен начин като сума на вектори
+от $V_i$, то казваме, че $V$ е \dfn{директна сума} на $V_1, V_2, \dots, V_n$.
+	\sidenote[-1cm]{Директна сума бележим $V = V_1 \oplus V_2 \oplus \dots V_n$.}
+\end{definition}
+
+\begin{theorem}
+	Нека $V$ е крайномерно \acrshort{vecsp} и $V_1 < V$, $V_2 < V$. Тогава е
+	изпълнено следното равенство: \[
+		dim(V_1 + V_2) = dimV_1 + dimV_2 - (dimV_1 \cap dimV_2)
+	\]
+\end{theorem}
+
+\begin{theorem}
+	Нека $V$ е крайномерно \acrshort{vecsp} и $V_1 < V$, $V_2 < V$. Тогава \[
+		V = V_1 \oplus V_2 \iff
+		\begin{cases}
+			V = V_1 + V_2 \\
+			V_1 \cap V_2 = \nullvec
+		\end{cases}
+	\]
+\end{theorem}
+	\sidenote[-2.3cm]{Твърдението ествествно се обобщава и сума от произволено
+	брой подпространства.}
+
+\begin{theorem}
+Нека $V, dimV = n$ е \acrshort{vecsp} с базис $e_1, e_2, \dots, e_n$. Ако $k
+\leq n$, то $V$ се преставя като $V = V_1 \oplus V_2$, където $V_1 = l(e_1, \dots, e_k)$
+и $V_2 = l(e_{k+1}, \dots, e_n)$.
+\end{theorem}
+	\sidenote[-2.2cm]{Ясно е, че $e_1, \dots, e_k$ и $e_{k+1}, \dots, e_n$ се явяват базиси
+	съотвено на $V_1$ и $V_2$, което пък влече $dimV_1 = k, dimV_2 = n - k$.}
+
+\begin{theorem}
+Нека $V, dimV = n$ е \acrshort{vecsp} и $W < V$. Тогава съществува $U < V$,
+такова че $V = W \oplus U$.
+\end{theorem}
+
+\begin{fact}
+Нека $V, dimV = n$ е \acrshort{vecsp}. Тогава, ако $e_1, \dots, e_n$ е базис на
+$V$, то $V$ е директна сума на едномерни подпространства - $V = l(e_1) \oplus l(e_2) \oplus \dots \oplus l(e_n)$
+\end{fact}
+
+\subsection{Ранг на система вектори. Ранг на матрица.}
+
+\begin{definition}
+\par Нека имаме матрица $A$. Ако фиксираме произволни $k$ реда и $k$ стълба, то те се
+пресичат, така че да образуват квадратна матрица от ред $k$. Детерминантата на
+на всяка такава матрица ще наричаме \dfn{минор} на $A$ от ред $k$.
+\\ \smallskip
+Ще казваме, че матрицата $A$ има \dfn{ранг} $r$, ако притежава различен от нула
+митор от ред $r$, а всички минори от по-голям ред са равни на нула.
+\sidenote[-1cm]{Ранг на матрица бележим $r(A)$.}
+\end{definition}
+
+\par Понятието \textit{ранг} може да се изрази и чрез система вектори.
+
+\begin{definition}
+Нека $V$ е \acrshort{vecsp} и $c_1, c_2, \dots, c_n \in V$ е система от вектори.
+Казваме, че системата има \dfn{ранг} $r$, ако $r$ от тези $n$ вектора са
+\acrshort{lin-indepen}, а всеки $n+1$ са задължително \acrshort{lin-depen}.
+\end{definition}
+
+\sidenote[-.3cm]{Съществува връзка между понятията \textit{размерност} на линейно
+	подпространство и \textit{ранг} на система от вектори, която се изразява по
+	следния начин:
+		\begin{equation*}
+		\begin{split}
+			r&(c_1, \dots, c_n) = \\=  dim l&(c_1, \dots, c_n)
+		\end{split}
+		\end{equation*}
+	}
+
+\begin{theorem}
+	Нека $A_{m\times n}$ е матрица с елементи от полето $F$. Тогава, ако отбележим
+вектор-редовете на $A$ с $a_1, \dots, a_m$ и вектор-стълбовете с $b_1, \dots,
+b_n$, то е изпълнено и равенството \[
+	r(a_1, \dots, a_m) = \\ r(b_1, \dots, b_n) = \\ r(A)
+\]
+\end{theorem}
+
+\begin{crly}
+Ако $А$ квадратна матрица, то $detA = 0$ точко когато редовете (или стълбовете)
+на $A$ са \acrshort{lin-depen}.
+\end{crly}
+
+\subsection{Хомогенни системи}
+
+\begin{theorem}[Теорема на Руше-Кронекер-Капели]
+Ако $A$ и $\bar{A}$ са съответно матрицата и разширената матрица на линейна
+система, то тя е съвместима точко когато $r(A) = r(\bar{A})$.
+\end{theorem}
+
+\begin{theorem}
+Нека $A$ e матрицата на линейна система. Ако тя e квадратна, то тогава системата
+има ненулево решение точно когато $detA = 0$.
+\end{theorem}
+
+\begin{fact}
+Множеството от решенията на хомогенна система е подпространство на $F^n$.
+\end{fact}
+
+\begin{definition}
+Всеки базис на пространството от решения, ако то е ненулево, на хомогенната
+система ще наричаме \acrfull{fund-sys-sol} на тази система.
+	\sidenote[-2cm]{Така всяка \acrshort{fund-sys-sol} се състои от
+		\acrshort{lin-indepen} вектори от $F^n$, които са решения на
+		хомогненната система и всяко друго решение е тяхна линейна комбинация.}
+\end{definition}
+
+\begin{theorem}
+Нека $U$ е подпространството от решенията на хомогенна ситемата. Тогава, ако
+$r(A) = r$, то $dimU = n - r$.
+	\sidenote[-1cm]{\underline{т.е} всяка \acrshort{fund-sys-sol} се състои от точно
+		$n - r$ на брой решения.}
+\end{theorem}
+
+\begin{theorem}
+Всяко подпространство $W$ на $F^n$ е пространството от решения на подходяща
+хомогенна система линейни уравнения с $n$ неизвестни.
+\end{theorem}
+
+\section{Линейни изображения}
 
 \newpage
 \section{Литература}
